@@ -1,7 +1,11 @@
 {
-  "name": "@zorbtech/zorbit-api",
-  "version": "1.0.0",
+  "name": "@zorbtech/zorbit-api-test",
+  "version": "0.0.2",
   "license": "MIT",
+  "title": "Zorbit Wallet API",
+  "description": "A npm package to allow communication with the Zorbit API",
+  "author": "Zorbtech",
+  "main": "index.ts",
   "scripts": {
     "ng": "ng",
     "start": "ng serve",

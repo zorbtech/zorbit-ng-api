@@ -11,6 +11,10 @@ import { ApiService } from './api/api.service';
     CommonModule,
     HttpClientModule
   ],
+  exports: [
+    CommonModule,
+    HttpClientModule
+  ],
   providers: [ApiService]
 })
 export class ApiModule { }
