@@ -24,18 +24,8 @@
       ]
   },
   "compileOnSave": false,
-  "filesGlob": [
-      "src/**/*.ts",
-      "!node_modules/**",
-      "!dist/**"
-  ],
   "angularCompilerOptions": {
       "strictMetadataEmit": true,
       "skipTemplateCodegen": true
-  },
-  "exclude": [
-      "node_modules",
-      "e2e",
-      "**/*.spec.ts"
-  ]
+  }
 }
