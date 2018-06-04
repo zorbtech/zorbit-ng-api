@@ -1,18 +1,14 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders, HttpParams} from '@angular/common/http';
-import { Observable } from 'rxjs/Observable';
-import 'rxjs/add/operator/map';
-import 'rxjs/add/operator/switchMap';
-import 'rxjs/add/operator/catch';
-import "rxjs/add/observable/interval";
-import 'rxjs/add/operator/startWith';
+import { Observable, interval } from 'rxjs';
+import { switchMap, startWith } from 'rxjs/operators';
 
 import { WalletCreation, WalletFileModel, WalletRecovery,
          WalletLoad, WalletInfo,
          FeeEstimation, TransactionBuilding, TransactionSending,
          WalletBalanceModel, WalletHistory,
          WalletBuildTransactionModel, 
-         WalletSendTransactionModel} from '../dtos';
+         WalletSendTransactionModel} from './dtos';
 
 @Injectable()
 export class ApiService {
@@ -43,8 +39,7 @@ export class ApiService {
 
     public recoverWallet(data: WalletRecovery): Observable<any> {
       return this.http
-        .post(this.apiUrl + '/wallet/recover/', JSON.stringify(data), {headers: this.headers})
-        .map((response: Response) => response);
+        .post(this.apiUrl + '/wallet/recover/', JSON.stringify(data), {headers: this.headers});
     }
 
     public loadWallet(data: WalletLoad): Observable<any> {
@@ -54,8 +49,7 @@ export class ApiService {
 
     public getWalletStatus(): Observable<any> {
       return this.http
-        .get(this.apiUrl + '/wallet/status')
-        .map((response: Response) => response);
+        .get(this.apiUrl + '/wallet/status');
     }
 
     public getGeneralInfoOnce(data: WalletInfo): Observable<any> {
@@ -63,8 +57,7 @@ export class ApiService {
       params.set('Name', data.walletName);
 
       return this.http
-        .get(this.apiUrl + '/wallet/general-info', {headers: this.headers, params: params})
-        .map((response: Response) => response);
+        .get(this.apiUrl + '/wallet/general-info', {headers: this.headers, params: params});
     }
 
     public getGeneralInfo(data: WalletInfo): Observable<any> {
@@ -72,21 +65,18 @@ export class ApiService {
       let params: HttpParams = new HttpParams();
       params.set('Name', data.walletName);
 
-      return Observable
-        .interval(this.pollingInterval)
-        .startWith(0)
-        .switchMap(() => this.http.get(this.apiUrl + '/wallet/general-info', {headers: this.headers, params: params}))
-        .map((response: Response) => response);
+      return interval(this.pollingInterval)
+        .pipe(startWith(0))
+        .pipe(switchMap(() => this.http.get(this.apiUrl + '/wallet/general-info', {headers: this.headers, params: params})));
     }
 
     public getWalletBalance(data: WalletInfo): Observable<WalletBalanceModel> {
 
       const params = new HttpParams().set('walletName', data.walletName);
 
-      return Observable
-        .interval(this.pollingInterval)
-        .startWith(0)
-        .switchMap(() => this.http.get<WalletBalanceModel>(this.apiUrl + '/wallet/balance', {headers: this.headers, params: params}));
+      return interval(this.pollingInterval)
+        .pipe(startWith(0))
+        .pipe(switchMap(() => this.http.get<WalletBalanceModel>(this.apiUrl + '/wallet/balance', {headers: this.headers, params: params})));
     }
 
     public getMaximumBalance(data): Observable<any> {
@@ -98,18 +88,16 @@ export class ApiService {
       params.set('allowUnconfirmed', "true");
 
       return this.http
-        .get(this.apiUrl + '/wallet/maxbalance', {headers: this.headers, params: params})
-        .map((response: Response) => response);
+        .get(this.apiUrl + '/wallet/maxbalance', {headers: this.headers, params: params});
     }
 
     public getWalletHistory(data: WalletInfo): Observable<WalletHistory> {
 
       const params = new HttpParams().set('walletName', data.walletName);
 
-      return Observable
-        .interval(this.pollingInterval)
-        .startWith(0)
-        .switchMap(() => this.http.get<WalletHistory>(this.apiUrl + '/wallet/history', {headers: this.headers, params: params}));
+      return interval(this.pollingInterval)
+        .pipe(startWith(0))
+        .pipe(switchMap(() => this.http.get<WalletHistory>(this.apiUrl + '/wallet/history', {headers: this.headers, params: params})));
     }
 
     public getUnusedReceiveAddress(data: WalletInfo): Observable<any> {
@@ -129,8 +117,7 @@ export class ApiService {
       params = params.append('accountName', "account 0"); //temporary
       params = params.append('count', count);
       return this.http
-        .get(this.apiUrl + '/wallet/unusedaddresses', {headers: this.headers, params: params})
-        .map((response: Response) => response);
+        .get(this.apiUrl + '/wallet/unusedaddresses', {headers: this.headers, params: params});
     }
 
     public getAllReceiveAddresses(data: WalletInfo): Observable<any> {
@@ -139,8 +126,7 @@ export class ApiService {
       params.set('walletName', data.walletName);
       params.set('accountName', "account 0"); //temporary
       return this.http
-        .get(this.apiUrl + '/wallet/addresses', {headers: this.headers, params: params})
-        .map((response: Response) => response);
+        .get(this.apiUrl + '/wallet/addresses', {headers: this.headers, params: params});
     }
 
     public estimateFee(data: FeeEstimation): Observable<any> {
@@ -154,8 +140,7 @@ export class ApiService {
       params.set('allowUnconfirmed', "true");
 
       return this.http
-        .get(this.apiUrl + '/wallet/estimate-txfee', {headers: this.headers, params: params})
-        .map((response: Response) => response);
+        .get(this.apiUrl + '/wallet/estimate-txfee', {headers: this.headers, params: params});
     }
 
     public buildTransaction(data: TransactionBuilding): Observable<WalletBuildTransactionModel> {
@@ -173,7 +158,6 @@ export class ApiService {
     public shutdownNode(): Observable<any> {
 
       return this.http
-        .post(this.apiUrl + '/node/shutdown', '')
-        .map((response: Response) => response);
+        .post(this.apiUrl + '/node/shutdown', '');
     }
 }

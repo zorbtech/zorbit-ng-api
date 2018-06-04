@@ -3,7 +3,7 @@ import { HttpClientModule } from '@angular/common/http';
 import { NgModule } from '@angular/core';
 
 
-import { ApiService } from './api/api.service';
+import { ApiService } from './api.service';
 
 
 @NgModule({
