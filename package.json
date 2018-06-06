@@ -1,6 +1,6 @@
 {
   "name": "@zorbtech/zorbit-api-test",
-  "version": "0.0.2",
+  "version": "0.0.4",
   "license": "MIT",
   "title": "Zorbit Wallet API",
   "description": "A npm package to allow communication with the Zorbit API",
